@@ -10,19 +10,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Admin user
-        User::create([
-            'name'     => 'Admin',
-            'email'    => 'admin@sis.com',
-            'password' => bcrypt('password'),
-            'role'     => 'admin',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@sis.com'],
+            [
+                'name'     => 'Admin',
+                'password' => bcrypt('password'),
+                'role'     => 'admin',
+            ]
+        );
 
-        // Student user
-        User::create([
-            'name'     => 'Student',
-            'email'    => 'student@sis.com',
-            'password' => bcrypt('password'),
-            'role'     => 'student',
+        $this->call([
+            TeacherSeeder::class,
+            CourseSeeder::class,
+            StudentSeeder::class,
         ]);
     }
 }

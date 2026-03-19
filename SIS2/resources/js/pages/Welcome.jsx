@@ -1,5 +1,5 @@
 import React from 'react'
-import { Head, Link } from '@inertiajs/react'
+import { Head } from '@inertiajs/react'
 import { GraduationCap, Users, BookOpen, ClipboardList, ArrowRight, Star } from 'lucide-react'
 
 export default function Welcome({ auth }) {
@@ -23,20 +23,20 @@ export default function Welcome({ auth }) {
                     </div>
                     <div className="flex items-center gap-3">
                         {auth?.user ? (
-                            <Link href="/dashboard"
+                            <a href="/dashboard"
                                 className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
                                 Go to Dashboard
-                            </Link>
+                            </a>
                         ) : (
                             <>
-                                <Link href="/login"
+                                <a href="/login"
                                     className="text-gray-300 hover:text-white px-4 py-2 text-sm transition-colors">
                                     Sign In
-                                </Link>
-                                <Link href="/register"
+                                </a>
+                                <a href="/register"
                                     className="bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
                                     Sign Up
-                                </Link>
+                                </a>
                             </>
                         )}
                     </div>
@@ -55,14 +55,14 @@ export default function Welcome({ auth }) {
                         A complete platform for students and administrators to manage enrollments, grades, courses, and more — all in one place.
                     </p>
                     <div className="flex items-center gap-4">
-                        <Link href="/register"
+                        <a href="/register"
                             className="flex items-center gap-2 bg-blue-600 text-white px-7 py-3 rounded-xl font-medium hover:bg-blue-700 transition-colors text-sm">
                             Get Started <ArrowRight size={16} />
-                        </Link>
-                        <Link href="/login"
+                        </a>
+                        <a href="/login"
                             className="flex items-center gap-2 bg-white/10 text-white px-7 py-3 rounded-xl font-medium hover:bg-white/20 transition-colors text-sm border border-white/20">
                             Sign In
-                        </Link>
+                        </a>
                     </div>
                 </div>
 
