@@ -26,26 +26,34 @@ class CourseController extends Controller
     }
 
     public function create()
-    {
-        return Inertia::render('Admin/Courses/Create', [
-            'teachers' => Teacher::all(['id', 'name']),
-        ]);
-    }
+{
+    return Inertia::render('Admin/Courses/Create', [
+        'teachers'            => Teacher::all(['id', 'name']),
+        'existingCourseNames' => Course::pluck('name')->toArray(),
+    ]);
+}
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name'       => 'required|string|max:255',
-            'code'       => 'required|unique:courses',
-            'teacher_id' => 'nullable|exists:teachers,id',
-            'units'      => 'required|integer',
-            'status'     => 'required|in:active,inactive',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'name'       => 'required|string|max:255|unique:courses,name',
+        'code'       => 'required|unique:courses',
+        'teacher_id' => 'nullable|exists:teachers,id',
+        'units'      => 'required|integer',
+        'status'     => 'required|in:active,inactive',
+    ]);
 
-        Course::create($request->all());
+    Course::create([
+        'name'        => $request->name,
+        'code'        => $request->code,
+        'teacher_id'  => $request->teacher_id ? (int) $request->teacher_id : null,
+        'description' => $request->description,
+        'units'       => (int) $request->units,
+        'status'      => $request->status,
+    ]);
 
-        return redirect()->route('admin.courses.index')->with('success', 'Course created successfully.');
-    }
+    return redirect()->route('admin.courses.index')->with('success', 'Course created successfully.');
+}
 
     public function show(Course $course)
     {
@@ -72,7 +80,14 @@ class CourseController extends Controller
             'status'     => 'required|in:active,inactive',
         ]);
 
-        $course->update($request->all());
+        $course->update([
+            'name'        => $request->name,
+            'code'        => $request->code,
+            'teacher_id'  => $request->teacher_id ? (int) $request->teacher_id : null,
+            'description' => $request->description,
+            'units'       => (int) $request->units,
+            'status'      => $request->status,
+        ]);
 
         return redirect()->route('admin.courses.index')->with('success', 'Course updated successfully.');
     }

@@ -20,13 +20,15 @@ export default function Create({ students, courses, teachers }) {
 
     const handleCourseChange = (courseId) => {
         setData('course_id', courseId)
-        const selectedCourse = courses.find(c => c.id == courseId)
+        const selectedCourse = courses.find(c => String(c.id) === String(courseId))
 
         console.log('Selected course:', selectedCourse)
+        console.log('teacher_id:', selectedCourse?.teacher_id)
 
         if (selectedCourse?.teacher_id) {
             setData('teacher_id', selectedCourse.teacher_id)
-            const teacher = teachers.find(t => t.id == selectedCourse.teacher_id)
+            const teacher = teachers.find(t => String(t.id) === String(selectedCourse.teacher_id))
+            console.log('Found teacher:', teacher)
             setLockedTeacherName(teacher?.name ?? '')
             setLockedTeacher(true)
         } else {

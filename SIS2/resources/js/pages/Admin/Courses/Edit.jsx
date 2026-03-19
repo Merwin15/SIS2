@@ -61,18 +61,18 @@ const generateCourseCode = (name, prefix) => {
 
 export default function Edit({ course, teachers }) {
     const { data, setData, put, processing, errors } = useForm({
-        name: course.name,
-        code: course.code,
-        teacher_id: course.teacher_id ?? '',
+        name:        course.name,
+        code:        course.code,
+        teacher_id:  course.teacher_id ? String(course.teacher_id) : '',
         description: course.description ?? '',
-        units: course.units,
-        status: course.status,
+        units:       course.units,
+        status:      course.status,
     })
 
     const handleNameChange = (name) => {
         const prefix = COURSE_PREFIXES[Math.floor(Math.random() * COURSE_PREFIXES.length)]
         const code = generateCourseCode(name, prefix)
-        setData(data => ({ ...data, name, code }))
+        setData(prev => ({ ...prev, name, code }))
     }
 
     const regenerateCode = () => {
@@ -84,6 +84,7 @@ export default function Edit({ course, teachers }) {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log('Submitting data:', data)
         put(`/admin/courses/${course.id}`)
     }
 
@@ -94,7 +95,7 @@ export default function Edit({ course, teachers }) {
                 <h1 className="text-2xl font-bold text-gray-800 mb-6">Edit Course</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
 
-                    {/* Course Name — Dropdown */}
+                    {/* Course Name */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Course Name</label>
                         <select
@@ -109,7 +110,7 @@ export default function Edit({ course, teachers }) {
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                     </div>
 
-                    {/* Course Code — Auto-generated */}
+                    {/* Course Code */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Course Code</label>
                         <div className="flex gap-2">
@@ -135,17 +136,21 @@ export default function Edit({ course, teachers }) {
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Teacher</label>
                         <select
-                            value={data.teacher_id}
+                            value={String(data.teacher_id)}
                             onChange={e => setData('teacher_id', e.target.value)}
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Select Teacher --</option>
-                            {teachers.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                            {teachers.map(t => (
+                                <option key={t.id} value={String(t.id)}>{t.name}</option>
+                            ))}
                         </select>
                     </div>
 
                     {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description <span className="text-gray-400 font-normal">(optional)</span></label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Description <span className="text-gray-400 font-normal">(optional)</span>
+                        </label>
                         <textarea
                             value={data.description}
                             onChange={e => setData('description', e.target.value)}

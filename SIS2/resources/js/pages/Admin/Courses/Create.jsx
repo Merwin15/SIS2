@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Head, useForm } from '@inertiajs/react'
 import AdminLayout from '@/layouts/AdminLayout'
 import { RefreshCw } from 'lucide-react'
 
-const COURSE_NAMES = [
-    // General IT
+const ALL_COURSE_NAMES = [
     'Introduction to Computing',
     'Computer Programming 1',
     'Computer Programming 2',
@@ -60,7 +59,7 @@ const generateCourseCode = (name, prefix) => {
     return `${prefix}${num}-${initials}`
 }
 
-export default function Create({ teachers }) {
+export default function Create({ teachers, existingCourseNames }) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         code: '',
@@ -70,10 +69,15 @@ export default function Create({ teachers }) {
         status: 'active',
     })
 
+    // Filter out already existing course names
+    const availableCourseNames = ALL_COURSE_NAMES.filter(
+        name => !existingCourseNames.includes(name)
+    )
+
     const handleNameChange = (name) => {
         const prefix = COURSE_PREFIXES[Math.floor(Math.random() * COURSE_PREFIXES.length)]
         const code = generateCourseCode(name, prefix)
-        setData(data => ({ ...data, name, code }))
+        setData(prev => ({ ...prev, name, code }))
     }
 
     const regenerateCode = () => {
@@ -95,7 +99,7 @@ export default function Create({ teachers }) {
                 <h1 className="text-2xl font-bold text-gray-800 mb-6">Add Course</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
 
-                    {/* Course Name — Dropdown */}
+                    {/* Course Name */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Course Name</label>
                         <select
@@ -103,14 +107,18 @@ export default function Create({ teachers }) {
                             onChange={e => handleNameChange(e.target.value)}
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Select Course --</option>
-                            {COURSE_NAMES.map(name => (
-                                <option key={name} value={name}>{name}</option>
-                            ))}
+                            {availableCourseNames.length > 0 ? (
+                                availableCourseNames.map(name => (
+                                    <option key={name} value={name}>{name}</option>
+                                ))
+                            ) : (
+                                <option disabled>All courses have been added</option>
+                            )}
                         </select>
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
                     </div>
 
-                    {/* Course Code — Auto-generated */}
+                    {/* Course Code */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Course Code</label>
                         <div className="flex gap-2">
@@ -141,13 +149,17 @@ export default function Create({ teachers }) {
                             onChange={e => setData('teacher_id', e.target.value)}
                             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <option value="">-- Select Teacher --</option>
-                            {teachers.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                            {teachers.map(t => (
+                                <option key={t.id} value={t.id}>{t.name}</option>
+                            ))}
                         </select>
                     </div>
 
                     {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description <span className="text-gray-400 font-normal">(optional)</span></label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Description <span className="text-gray-400 font-normal">(optional)</span>
+                        </label>
                         <textarea
                             value={data.description}
                             onChange={e => setData('description', e.target.value)}

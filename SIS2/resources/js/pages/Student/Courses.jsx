@@ -1,7 +1,7 @@
 import React from 'react'
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import StudentLayout from '@/layouts/StudentLayout'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, ArrowRight } from 'lucide-react'
 
 export default function Courses({ enrollments }) {
     return (
@@ -13,7 +13,11 @@ export default function Courses({ enrollments }) {
                 {enrollments.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {enrollments.map((e) => (
-                            <div key={e.id} className="border border-gray-200 rounded-xl p-5 hover:shadow-md transition-shadow">
+                            <Link
+                                key={e.id}
+                                href={`/student/courses/${e.id}`}
+                                className="border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-blue-300 transition-all group"
+                            >
                                 <div className="flex items-start justify-between mb-3">
                                     <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <BookOpen size={20} className="text-blue-600" />
@@ -29,9 +33,11 @@ export default function Courses({ enrollments }) {
                                 <p className="text-xs text-gray-400 mb-3">Code: {e.course?.code} • {e.course?.units} units</p>
                                 <div className="border-t pt-3 flex items-center justify-between text-xs text-gray-500">
                                     <span>👨‍🏫 {e.course?.teacher?.name ?? 'No teacher assigned'}</span>
-                                    <span>{e.semester} • {e.school_year}</span>
+                                    <span className="flex items-center gap-1 text-blue-500 group-hover:text-blue-700">
+                                        View details <ArrowRight size={12} />
+                                    </span>
                                 </div>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 ) : (

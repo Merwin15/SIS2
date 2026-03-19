@@ -54,6 +54,20 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function courseDetail(Enrollment $enrollment): Response
+    {
+        // Make sure student can only view their own enrollment
+        if ($enrollment->student_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $enrollment->load(['course.teacher', 'grades']);
+
+        return Inertia::render('Student/CourseDetail', [
+            'enrollment' => $enrollment,
+        ]);
+    }
+
     public function grades(): Response
     {
         $grades = Grade::whereHas('enrollment', fn($q) => $q->where('student_id', auth()->id()))
@@ -80,10 +94,10 @@ class DashboardController extends Controller
         $user = auth()->user();
 
         $request->validate([
-            'name'                  => 'required|string|max:255',
-            'email'                 => 'required|email|unique:users,email,' . $user->id,
-            'current_password'      => 'nullable|string',
-            'password'              => 'nullable|min:8|confirmed',
+            'name'             => 'required|string|max:255',
+            'email'            => 'required|email|unique:users,email,' . $user->id,
+            'current_password' => 'nullable|string',
+            'password'         => 'nullable|min:8|confirmed',
         ]);
 
         if ($request->current_password) {

@@ -37,6 +37,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', [StudentDashboard::class, 'index'])->name('dashboard');
     Route::get('/courses', [StudentDashboard::class, 'courses'])->name('courses');
+    Route::get('/courses/{enrollment}', [StudentDashboard::class, 'courseDetail'])->name('courses.show');
     Route::get('/grades', [StudentDashboard::class, 'grades'])->name('grades');
     Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
     Route::put('/profile', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
