@@ -10,7 +10,12 @@ class Enrollment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id', 'course_id', 'semester', 'school_year', 'status',
+        'student_id',
+        'course_id',
+        'teacher_id',
+        'semester',
+        'school_year',
+        'status',
     ];
 
     public function student()
@@ -21,6 +26,11 @@ class Enrollment extends Model
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
     }
 
     public function grades()

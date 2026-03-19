@@ -5,18 +5,23 @@ import { Star, TrendingUp } from 'lucide-react'
 
 export default function Grades({ grades, gpa }) {
     const getGradeColor = (grade) => {
-        if (grade >= 90) return 'text-green-600'
-        if (grade >= 75) return 'text-blue-600'
-        if (grade >= 60) return 'text-yellow-600'
+        const g = Number(grade)
+        if (g <= 3.0) return 'text-green-600'
         return 'text-red-600'
     }
 
     const getGradeBadge = (grade) => {
-        if (grade >= 90) return { label: 'Excellent', class: 'bg-green-100 text-green-700' }
-        if (grade >= 75) return { label: 'Passed', class: 'bg-blue-100 text-blue-700' }
-        if (grade >= 60) return { label: 'Fair', class: 'bg-yellow-100 text-yellow-700' }
+        const g = Number(grade)
+        if (g <= 1.0) return { label: 'Excellent', class: 'bg-green-100 text-green-700' }
+        if (g <= 1.5) return { label: 'Very Good', class: 'bg-green-100 text-green-700' }
+        if (g <= 2.0) return { label: 'Good', class: 'bg-blue-100 text-blue-700' }
+        if (g <= 2.5) return { label: 'Satisfactory', class: 'bg-blue-100 text-blue-700' }
+        if (g <= 3.0) return { label: 'Passed', class: 'bg-yellow-100 text-yellow-700' }
         return { label: 'Failed', class: 'bg-red-100 text-red-700' }
     }
+
+    const passedCount = grades.filter(g => Number(g.grade) <= 3.0).length
+    const failedCount = grades.filter(g => Number(g.grade) > 3.0).length
 
     return (
         <StudentLayout>
@@ -26,13 +31,35 @@ export default function Grades({ grades, gpa }) {
             {gpa && (
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-6 mb-6 text-white flex items-center justify-between">
                     <div>
-                        <p className="text-blue-200 text-sm mb-1">Overall GPA / Average</p>
+                        <p className="text-blue-200 text-sm mb-1">Overall GWA</p>
                         <p className="text-5xl font-bold">{gpa}</p>
-                        <p className="text-blue-200 text-sm mt-1">Based on {grades.length} subject{grades.length !== 1 ? 's' : ''}</p>
+                        <div className="flex items-center gap-4 mt-2">
+                            <span className="text-green-300 text-sm">✓ {passedCount} Passed</span>
+                            <span className="text-red-300 text-sm">✗ {failedCount} Failed</span>
+                        </div>
                     </div>
                     <TrendingUp size={64} className="text-white opacity-20" />
                 </div>
             )}
+
+            {/* Grading Legend */}
+            <div className="bg-white rounded-xl shadow-sm p-4 mb-6">
+                <p className="text-sm font-medium text-gray-700 mb-3">Grading Scale</p>
+                <div className="flex flex-wrap gap-2 text-xs">
+                    {[
+                        { label: '1.0 — Excellent', class: 'bg-green-100 text-green-700' },
+                        { label: '1.25 - 1.5 — Very Good', class: 'bg-green-100 text-green-700' },
+                        { label: '1.75 - 2.0 — Good', class: 'bg-blue-100 text-blue-700' },
+                        { label: '2.25 - 2.5 — Satisfactory', class: 'bg-blue-100 text-blue-700' },
+                        { label: '2.75 - 3.0 — Passed', class: 'bg-yellow-100 text-yellow-700' },
+                        { label: '5.0 — Failed', class: 'bg-red-100 text-red-700' },
+                    ].map(item => (
+                        <span key={item.label} className={`px-2 py-1 rounded-full ${item.class}`}>
+                            {item.label}
+                        </span>
+                    ))}
+                </div>
+            </div>
 
             {/* Grades Table */}
             <div className="bg-white rounded-xl shadow-sm p-6">
@@ -56,7 +83,9 @@ export default function Grades({ grades, gpa }) {
                                     <tr key={g.id} className="border-b last:border-0 hover:bg-gray-50">
                                         <td className="py-3 font-medium text-gray-800">{g.enrollment?.course?.name}</td>
                                         <td className="py-3 text-gray-500">{g.enrollment?.semester}</td>
-                                        <td className={`py-3 font-bold text-xl ${getGradeColor(g.grade)}`}>{g.grade}</td>
+                                        <td className={`py-3 font-bold text-xl ${getGradeColor(g.grade)}`}>
+                                            {Number(g.grade).toFixed(2)}
+                                        </td>
                                         <td className="py-3">
                                             <span className={`px-2 py-1 rounded-full text-xs ${badge.class}`}>
                                                 {badge.label}

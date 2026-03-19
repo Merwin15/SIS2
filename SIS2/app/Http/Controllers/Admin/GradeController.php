@@ -31,18 +31,19 @@ class GradeController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'enrollment_id' => 'required|exists:enrollments,id',
-            'grade'         => 'required|numeric|min:0|max:100',
-            'remarks'       => 'nullable|string',
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'enrollment_id' => 'required|exists:enrollments,id',
+        'grade'         => 'required|numeric|min:1.0|max:5.0',
+        'remarks'       => 'nullable|string',
+    ]);
 
-        Grade::create($request->all());
+    Grade::create($request->all());
 
-        return redirect()->route('admin.grades.index')->with('success', 'Grade added successfully.');
-    }
+    return redirect()->route('admin.grades.index')->with('success', 'Grade added successfully.');
+}
+
 
     public function show(Grade $grade)
     {
@@ -59,18 +60,18 @@ class GradeController extends Controller
         ]);
     }
 
-    public function update(Request $request, Grade $grade)
-    {
-        $request->validate([
-            'enrollment_id' => 'required|exists:enrollments,id',
-            'grade'         => 'required|numeric|min:0|max:100',
-            'remarks'       => 'nullable|string',
-        ]);
+   public function update(Request $request, Grade $grade)
+{
+    $request->validate([
+        'enrollment_id' => 'required|exists:enrollments,id',
+        'grade'         => 'required|numeric|min:1.0|max:5.0',
+        'remarks'       => 'nullable|string',
+    ]);
 
-        $grade->update($request->all());
+    $grade->update($request->all());
 
-        return redirect()->route('admin.grades.index')->with('success', 'Grade updated successfully.');
-    }
+    return redirect()->route('admin.grades.index')->with('success', 'Grade updated successfully.');
+}
 
     public function destroy(Grade $grade)
     {

@@ -28,6 +28,7 @@ export default function Index({ enrollments, filters }) {
                         <tr className="text-left text-gray-500 border-b">
                             <th className="pb-3">Student</th>
                             <th className="pb-3">Course</th>
+                            <th className="pb-3">Instructor</th>
                             <th className="pb-3">Semester</th>
                             <th className="pb-3">School Year</th>
                             <th className="pb-3">Status</th>
@@ -39,6 +40,7 @@ export default function Index({ enrollments, filters }) {
                             <tr key={e.id} className="border-b last:border-0 hover:bg-gray-50">
                                 <td className="py-3 font-medium text-gray-800">{e.student?.name}</td>
                                 <td className="py-3 text-gray-500">{e.course?.name}</td>
+                                <td className="py-3 text-gray-500">{e.teacher?.name ?? 'Unassigned'}</td>
                                 <td className="py-3 text-gray-500">{e.semester}</td>
                                 <td className="py-3 text-gray-500">{e.school_year}</td>
                                 <td className="py-3">
@@ -58,7 +60,7 @@ export default function Index({ enrollments, filters }) {
                                 </td>
                             </tr>
                         )) : (
-                            <tr><td colSpan={6} className="py-8 text-center text-gray-400">No enrollments found</td></tr>
+                            <tr><td colSpan={7} className="py-8 text-center text-gray-400">No enrollments found</td></tr>
                         )}
                     </tbody>
                 </table>
