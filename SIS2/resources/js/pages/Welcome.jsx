@@ -1,12 +1,25 @@
 import React from 'react'
 import { Head } from '@inertiajs/react'
 import { GraduationCap, Users, BookOpen, ClipboardList, ArrowRight, Star } from 'lucide-react'
+import BgImage from '@/assets/academic.jpg'
 
 export default function Welcome({ auth }) {
     return (
         <>
             <Head title="Welcome" />
-            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
+            <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 relative">
+
+                {/* Background Image */}
+                <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                        backgroundImage: `url(${BgImage})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        opacity: 0.1,
+                    }}
+                />
+
                 {/* Background decoration */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full opacity-5 blur-3xl" />
@@ -19,7 +32,7 @@ export default function Welcome({ auth }) {
                         <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
                             <GraduationCap size={22} className="text-white" />
                         </div>
-                        <span className="text-white font-bold text-lg">SIS Portal</span>
+                        <span className="text-white font-bold text-lg">ACADIFY</span>
                     </div>
                     <div className="flex items-center gap-3">
                         {auth?.user ? (
@@ -91,7 +104,7 @@ export default function Welcome({ auth }) {
 
                 {/* Footer */}
                 <div className="relative z-10 border-t border-white/10 py-6 text-center">
-                    <p className="text-gray-500 text-sm">© 2026 SIS Portal. All rights reserved.</p>
+                    <p className="text-gray-500 text-sm">© 2026 Acadidy. All rights reserved.</p>
                 </div>
             </div>
         </>

@@ -31,7 +31,7 @@ export default function Login({ status, canResetPassword }) {
                         <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4 shadow-lg">
                             <GraduationCap size={32} className="text-white" />
                         </div>
-                        <h1 className="text-3xl font-bold text-white">SIS Portal</h1>
+                        <h1 className="text-3xl font-bold text-white">ACADIFY</h1>
                         <p className="text-gray-400 mt-1">Student Information System</p>
                     </div>
 
