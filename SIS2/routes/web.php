@@ -42,5 +42,7 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/profile', [StudentDashboard::class, 'profile'])->name('profile');
     Route::put('/profile', [StudentDashboard::class, 'updateProfile'])->name('profile.update');
 });
-
+// Google Auth
+Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirect'])->name('google.redirect');
+Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'callback'])->name('google.callback');
 require __DIR__.'/auth.php';

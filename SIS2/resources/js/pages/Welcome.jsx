@@ -1,7 +1,7 @@
 import React from 'react'
 import { Head } from '@inertiajs/react'
 import { GraduationCap, Users, BookOpen, ClipboardList, ArrowRight, Star } from 'lucide-react'
-import BgImage from '@/assets/academic.jpg'
+import BgImage from '@/assets/bg.png'
 
 export default function Welcome({ auth }) {
     return (
